@@ -1,5 +1,20 @@
+	.section .data
+PROMPT:
+	.asciz "Please enter a mathematical express that does not include variables\n"
+	
 	.section .text
 	# PARAMETERS: buffer, amount_to_read
+
+.global print_prompt
+print_prompt:
+	movq $1, %rax
+	movq $1, %rdi
+	leaq PROMPT(%rip), %rsi
+	movq $68, %rdx
+	syscall
+
+	ret
+
 .global read_input
 read_input:
 	pushq %rbp

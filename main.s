@@ -9,7 +9,12 @@ calculation_line:
 	.section .text
 	.global _start
 	.extern read_input
+	.extern print_prompt
 _start:
+
+calculation_loop:
+	call print_prompt
+
 	leaq calculation_line(%rip), %rax 
 	push $50
 	push %rax
