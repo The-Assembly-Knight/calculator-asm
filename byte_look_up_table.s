@@ -1,0 +1,271 @@
+.include "byte_types.s"
+	.set INVALID_BYTE,	-1
+	.set REGULAR_BYTE,	0
+	.set DELIMITER_BYTE,	1
+	.set STANDALONE_BYTE,	2
+	.set END_OF_LINE_BYTE,	3
+
+	.section .rodata
+byte_type_look_up_table:
+	.byte $END_OF_LINE_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $END_OF_LINE_BYTE		# \n
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $DELIMITER_BYTE		# ' '
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $STANDALONE_BYTE		# '('
+	.byte $STANDALONE_BYTE		# ')'
+	.byte $STANDALONE_BYTE		# '*'
+	.byte $STANDALONE_BYTE		# '+'
+	.byte $INVALID_BYTE
+	.byte $STANDALONE_BYTE		# '-'
+	.byte $INVALID_BYTE
+	.byte $STANDALONE_BYTE		# '/'
+	.byte $REGULAR_BYTE		# '0'
+	.byte $REGULAR_BYTE		# '1'
+	.byte $REGULAR_BYTE		# '2'
+	.byte $REGULAR_BYTE		# '3'
+	.byte $REGULAR_BYTE		# '4'
+	.byte $REGULAR_BYTE		# '5'
+	.byte $REGULAR_BYTE		# '6'
+	.byte $REGULAR_BYTE		# '7'
+	.byte $REGULAR_BYTE		# '8'
+	.byte $REGULAR_BYTE		# '9'
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+	.byte $INVALID_BYTE
+
+
+	.section .text
+get_byte_type:
+
+
