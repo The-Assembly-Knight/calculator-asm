@@ -264,8 +264,20 @@ byte_type_look_up_table:
 	.byte $INVALID_BYTE
 	.byte $INVALID_BYTE
 
-
 	.section .text
+	.global get_byte_type
+# first argument: byte of which the type will be identified
+# returns type in %rax
 get_byte_type:
+	push %rbp
+	movq %rsp, %rbp
 
+	leaq byte_type_look_up_table(%rip), %rax	# get a pointer to look-up table
 
+	movq 16(%rbp), %rbx				# get first argument (byte to be identified) into %rbx
+	movzbq %bl, %rbx				# zero-extend %rbx to make sure there is no junk in it
+
+	movq (%rax, %rbx), %rax				# get %rbx index in look-up table and store it in %rax
+
+	popq %rbp					# restore base pointer
+	ret
