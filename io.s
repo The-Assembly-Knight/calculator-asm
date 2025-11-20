@@ -23,8 +23,7 @@ read_input:
 	movq $0, %rax
 	movq $0, %rdi
 	movq 16(%rbp), %rsi		# dereference pointer into rsi
-	leaq (%rsi), %rsi		# get address of pointer into rsi
-	movq 24(%rbp), %rdx
+	movq 24(%rbp), %rdx		# get amount_to_read arg
 	syscall
 
 	test %rax, %rax
