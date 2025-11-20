@@ -1,0 +1,7 @@
+.ifndef BYTE_TYPES
+	.set INVALID_BYTE,	-1
+	.set REGULAR_BYTE,	0
+	.set DELIMITER_BYTE,	1
+	.set STANDALONE_BYTE,	2
+	.set END_OF_LINE_BYTE,	3
+.endif
