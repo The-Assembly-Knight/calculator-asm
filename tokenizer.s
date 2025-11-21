@@ -68,28 +68,54 @@ identify_byte:
 	jne handle_invalid_byte
 
 handle_regular_byte:
-	movb $1, TOKEN_TYPE_OFFSET(%rbx)
 
 	cmpb $0, TOKEN_LENGTH_OFFSET(%rbx) 
 	jg regular_token_already_started
-						# if the current token hasnt been started (its length is less than 1) then identify the current byte as its starting point
-	movq -8(%rbp), %rcx			# use rcx temporarily to hold the current offset in the buffer
+							# if the current token hasnt been started (its length is less than 1) then identify the current byte as its starting point
+	movb $REGULAR_BYTE, TOKEN_TYPE_OFFSET(%rbx)	# assign regular_type as the token's type
+
+	movq -8(%rbp), %rcx				# use rcx temporarily to hold the current offset in the buffer
 	movzbq %cl, %rcx
-	movb %cl, TOKEN_START_OFFSET(%rbx)	# move current offset to start_offste member in current token struct
+	movb %cl, TOKEN_START_OFFSET(%rbx)		# move current offset to start_offste member in current token struct
 	jmp regular_token_already_started
 	
 regular_token_already_started:
 	addb $1, TOKEN_LENGTH_OFFSET(%rbx)
+	incb %cl				# increase buffer's offset
 	jmp end_tokenize_string			# TEMPLATE!! here it is supposed to go to next_byte which will get repeat the process until the token is done or the string has been read
 
 handle_delimiter_byte:
-handle_standalone_byte:
-handle_end_of_line_byte:
-handle_invalid_byte:
+	incb %cl				# increase buffer's offset
+	cmpb $0, TOKEN_LENGTH_OFFSET(%rbx)	# check if the token has already started
+	jg end_current_token			# SUBSTITUTE FOR A LABEL COMMON FOR IT AND END_OF_LINE_BYTE FROM WHERE END_CURRENT_TOKEN WILL BE CALLED AND THEN IT WILL JMP TO THE NEXT BYTE
+	jmp end_tokenize_string			# TEMPLATE!! here it is supposed to go to next_byte which will get repeat the process until the token is done or the string has been read
 
+handle_standalone_byte:
+	cmpb $0, TOKEN_LENGTH_OFFSET(%rbx)
+	jg end_current_token			# SUBSTITUTE FOR ITS OWN LABEL, AND THEN FROM THAT LABEL CALL (call instruction) END_CURRENT_TOKEN
+	# TODO: ADD MORE RBX reloading of buffer because the buffer will now be a token ahead in case there was a token before standalone byte was found.
+	
+	jmp end_current_token			# SUBSTITUTE FOR A LABEL COMMON FOR IT AND END_OF_LINE_BYTE FROM WHERE END_CURRENT_TOKEN WILL BE CALLED AND THEN IT WILL JMP TO THE ENXT BYTE
+	
+	
+handle_end_of_line_byte:
+						# IT WILL JMP TO END_TOKENIZE_STRING SINCE THERE ARE NO MORE STRINGS TO BE FOUND AND 
+						# IN CASE THERE IS A TOKEN BEFORE IT, THE TOKEN WILL BE ENDED BY CALLING END CURRENT TOKEN FUNCTION
+handle_invalid_byte:
+	jmp error_exit
+
+end_current_token:
+	# END THE CURRENT TOKEN BY INCREMENTING THE OFFSET OF TOKENS BUFFER TODO: (GOTTA ADD A NEW LOCAL VARIABLE FOR THIS)
+	# THIS LABEL MUST BE A CALLABLE FUNCTION SO IT MUST END WITH RET
+	
 
 end_tokenize_string:
 	movq %rbp, %rsp			# discard local variables
 
 	popq %rbp
 	ret
+
+error_exit:
+	movq $60, %rax
+	movq $1, %rdi
+	syscall
