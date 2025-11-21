@@ -272,10 +272,10 @@ get_byte_type:
 
 	movq 16(%rbp), %rbx				# get first argument (byte to be identified) into %rbx
 	movzbq %bl, %rbx				# zero-extend %rbx to make sure there is no junk in it
-check_rbx:
+
 	movq (%rax, %rbx), %rax				# get %rbx index in look-up table and store it in %rax
 	movzbq %al, %rax
-check_rcx:
 
+get_byte_type_done:
 	popq %rbp					# restore base pointer
 	ret

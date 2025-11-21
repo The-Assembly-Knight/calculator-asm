@@ -5,6 +5,7 @@ calculation_line:
 
 calculation_line_tokens:
 	.skip 50*4		# max size for calculation line * size of token structure
+	.byte 0
 
 	.section .data
 	.set MAX_CALCULATION_LINE_LENGTH, 50
