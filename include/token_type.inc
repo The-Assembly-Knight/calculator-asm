@@ -1,0 +1,6 @@
+.ifndef TOKEN_TYPES
+	.set TOKEN_TYPE_INVALID	,	-1
+	.set TOKEN_TYPE_NUMBER	,	0
+	.set TOKEN_TYPE_OPERATOR,	1
+	.set TOKEN_TYPE_END_OF_LINE,	2
+.endif
