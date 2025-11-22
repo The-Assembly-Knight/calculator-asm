@@ -1,5 +1,5 @@
 TARGET = calculator-asm
-SRC = $(wildcard *.s)
+SRC = $(shell find . -name '*.s')
 OBJ = $(SRC:.s=.o)
 
 all: $(TARGET)

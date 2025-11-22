@@ -1,5 +1,5 @@
 	.section .data
-	.include "byte_type.inc"
+	.include "include/byte_type.inc"
 
 	.section .rodata
 byte_type_look_up_table:

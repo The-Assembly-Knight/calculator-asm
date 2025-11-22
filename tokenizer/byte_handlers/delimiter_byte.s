@@ -1,4 +1,6 @@
 	.section .data
+	.include "include/token_type.inc"
+	.include "include/token_struct_offset.inc"
 	
 	.section .text
 	.global handle_delimiter_byte
@@ -17,7 +19,7 @@ handle_delimiter_byte:
 
 	movq 16(%rbp), %rbx		# move current pointer token to rbx
 
-	cmpb $0, LENGTH(%rbx)		# check if current token's length is equal to 0.
+	cmpb $0, TOKEN_LENGTH_OFFSET(%rbx)		# check if current token's length is equal to 0.
 	je token_has_not_started	# if it is == 0 then the token has not yet started.
 	jge token_already_started	# if it is >  0 then the token already started.
 	jne invalid_token_length	# if it is <  0 then the token length is invalid and an error must have been produced somewhere in the code.

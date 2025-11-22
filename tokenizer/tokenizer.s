@@ -1,5 +1,6 @@
 	.section .data
-	.include "../include/byte_type.inc"
+	.include "include/byte_type.inc"
+	.include "include/token_struct_offset.inc"
 
 	.set ADD_SIGN, '+'
 	.set SUB_SIGN, '-'
@@ -21,9 +22,6 @@ token_greater_than_0:
 
 	.global token_struct_size
 token_struct_size:
-	.set TOKEN_TYPE_OFFSET, 0				# get type mem offset from the start of token
-	.set TOKEN_START_OFFSET, 1				# get start mem offset from the start of token
-	.set TOKEN_LENGTH_OFFSET, 2				# get length mem offset from the start of token
 	.set TOKEN_STRUCT_SIZE, token_struct_size - token	# get size of token structure by substracting addresses
 
 	.section .text
@@ -46,7 +44,7 @@ tokenize_string:
 					# local variable 1 is the calculation_line buffer's offset
 	movb $0, -16(%rbp)		# lcaol variable 2 will calculation_line_tokens buffer's offset
 
-	jmp get_next_token
+	jmp get_next_byte
 
 get_next_byte:
 	movq 16(%rbp), %rax		# get calculation_line pointer into rax

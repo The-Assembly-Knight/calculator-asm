@@ -1,4 +1,6 @@
 	.section .data
+	.include "include/token_type.inc"
+	.include "include/token_struct_offset.inc"
 
 	.section .text
 	.global handle_end_of_line_byte
@@ -17,13 +19,13 @@ handle_end_of_line_byte:
 
 	movq 16(%rbp), %rbx		# get current token pointer into rbx
 	
-	cmpq $0, LENGTH(%rbx)		# check if the length of the token is 0.
+	cmpq $0, TOKEN_LENGTH_OFFSET(%rbx)		# check if the length of the token is 0.
 	je token_has_not_started	# if it is 0 that means it hasnt started.
 	jg token_already_started	# if it is > 0 then the token has already already started.
 	jne invalid_token_length	# if it is < 0 then it is invalid and there must had been an error somewhere in the code.
 
 token_has_not_started:
-	movb $TYPE_END_OF_LINE, TYPE(%rbx)	# make the current token's type TYPE_END_OF_LINE.
+	movb $TOKEN_TYPE_END_OF_LINE, TOKEN_LENGTH_OFFSET(%rbx)	# make the current token's type TYPE_END_OF_LINE.
 	
 	movq $0, %rax			# return that nothing else must be done to the current byte
 	popq %rbp
