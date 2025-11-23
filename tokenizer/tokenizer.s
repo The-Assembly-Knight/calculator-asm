@@ -101,13 +101,8 @@ found_standalone_byte:
 	je no_token_found_next_to_standalone_byte
 
 	call end_current_token		# but if rax == 1, then that means the function reported that the current token must be ended and the funcion must be recalled
-
-	pushq TOKEN_STRUCT_SIZE(%rbx)	# pass as second argument the token pointer next to the current token's pointer
-	pushq -8(%rbp)			# pass as first argument the calculation line buffer's offset
-	call handle_standalone_byte
-	addq $16, %rsp			# reset stack pointer to before the arguments were passed to the function
-
-	jmp no_token_found_next_to_standalone_byte
+	jmp get_next_byte		# since the current offset has not been increased (only the token buffer offset has) jmping to get_next_byte will repeat this function
+					# and everything will be the same except for the current token which this time wont have started
 
 no_token_found_next_to_standalone_byte:
 	call end_current_token
@@ -121,12 +116,9 @@ found_end_of_line_byte:
 	cmpq $0, %rax			# if rax == 0 that means the handle_end_of_line_byte function reported that nothing must be done but to end the current token.
 	je no_token_found_next_to_end_of_line_byte
 	
-	call end_current_token		# but if rax == 1, then that means the function reported that the current token must be ended and the function must be recalled.
-
-	pushq TOKEN_STRUCT_SIZE(%rbx)
-	call handle_end_of_line_byte
-
-	jmp no_token_found_next_to_end_of_line_byte
+	call end_current_token		# but if rax == 1, then that means the function reported that the current token must be ended and the funcion must be recalled
+	jmp get_next_byte		# since the current offset has not been increased (only the token buffer offset has) jmping to get_next_byte will repeat this function
+					# and everything will be the same except for the current token which this time wont have started
 
 no_token_found_next_to_end_of_line_byte:
 	call end_current_token
@@ -141,7 +133,7 @@ increase_buffer_offset_and_next_byte:
 	jmp get_next_byte
 
 end_current_token:
-	addb $TOKEN_STRUCT_SIZE, -16(%rbp)	# increase the token buffer's offset by the size of a token struct (4)
+	addq $TOKEN_STRUCT_SIZE, -16(%rbp)	# increase the token buffer's offset by the size of a token struct (4)
 	ret
 	
 
