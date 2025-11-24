@@ -133,7 +133,7 @@ increase_buffer_offset_and_next_byte:
 	jmp get_next_byte
 
 end_current_token:
-	addq $TOKEN_STRUCT_SIZE, -16(%rbp)	# increase the token buffer's offset by the size of a token struct (4)
+	addb $TOKEN_STRUCT_SIZE, -16(%rbp)	# increase the token buffer's offset by the size of a token struct (4)
 	ret
 	
 
